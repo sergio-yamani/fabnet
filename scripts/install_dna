@@ -8,12 +8,6 @@ if [ $? -ne 0 ]; then
 fi
 starttime=$(date +%s)
 
-echo 
-echo "Chaincode Id     : $1"
-echo "Chaincode Version: $2"
-echo "Chaincode Path   : $3"
-echo
-
 
 echo "POST request Enroll on Org1  ..."
 echo
