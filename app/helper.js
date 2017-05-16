@@ -272,13 +272,28 @@ var getOrderer = function() {
 var getKeyStoreForOrg = function(org) {
 	return config.keyValueStore + '_' + org;
 };
+
 var getArgs = function(chaincodeArgs) {
 	var args = [];
-	for (var i = 0; i < chaincodeArgs.length; i++) {
+
+	for (var i = 0; i < chaincodeArgs.length; i++) {  
 		args.push(chaincodeArgs[i]);
 	}
 	return args;
 };
+
+// Fix to work with marbles 3.5.3 - 2017.05.16 - Yamani
+// used only in Invoke
+var getArgsInvoke = function(chaincodeArgs) {
+	var args = [];
+
+//	for (var i = 0; i < chaincodeArgs.length; i++) {  
+	for (var i = 1; i < chaincodeArgs.length; i++) {	// Fix to work with marbles 3.5.3 - 2017.05.16 - Yamani
+		args.push(chaincodeArgs[i]);
+	}
+	return args;
+};
+
 var getPeerAddressByName = function(org, peer) {
 	var peerList = [];
 	var address = ORGS[org][peer].requests;
@@ -291,6 +306,7 @@ var getNonce = function() {
 };
 exports.getRegisteredUsers = getRegisteredUsers;
 exports.getArgs = getArgs;
+exports.getArgsInvoke = getArgsInvoke;
 exports.getKeyStoreForOrg = getKeyStoreForOrg;
 exports.getOrgName = getOrgName;
 exports.getLogger = getLogger;

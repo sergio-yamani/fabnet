@@ -8,7 +8,6 @@ if [ $? -ne 0 ]; then
 fi
 starttime=$(date +%s)
 
-
 echo "POST request Enroll on Org1  ..."
 echo
 ORG1_TOKEN=$(curl -s -X POST \
@@ -22,24 +21,22 @@ echo
 echo "ORG1 token is $ORG1_TOKEN"
 echo
 
-echo "POST instantiate chaincode on peer1 of Org1"
+
+echo "POST invoke chaincode on peer1 of Org1"
 echo
-curl -s -X POST \
-  http://localhost:4000/channels/mychannel/chaincodes \
+TRX_ID=$(curl -s -X POST \
+  http://localhost:4000/channels/mychannel/chaincodes/dna \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "cache-control: no-cache" \
   -H "content-type: application/json" \
   -H "x-access-token: $ORG1_TOKEN" \
   -d '{
 	"peers": ["localhost:7051"],
-	"chaincodeName":"marbles",
-	"chaincodePath":"github.com/IBM-Blockchain/marbles/chaincode/src/marbles",
-	"chaincodeVersion":"v3.5.3",
-	"functionName":"init",
-	"args":["200"]
-}'
+	"chaincodeVersion": "v1",
+	"functionName": "invoke",
+	"args": ["create","000.000.000-00","{\"id\":\"1\",\"CPF\":\"000.000.000-00\"}"]
+}')
+echo "Transacton ID is $TRX_ID"
 echo
-echo
-
 echo
 echo "Total execution time : $(($(date +%s)-starttime)) secs ..."

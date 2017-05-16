@@ -78,19 +78,27 @@ var invokeChaincode = function(peers, channelName, chaincodeName,
 		nonce = helper.getNonce();
 		tx_id = chain.buildTransactionID(nonce, member);
 		hfc.setConfigSetting('E2E_TX_ID', tx_id);
+
 		logger.info('setConfigSetting("E2E_TX_ID") = %s', tx_id);
 		logger.debug(util.format('Sending transaction "%s"', tx_id));
+		logger.debug(">>> Invoke Function:", args[0]);
+		args = helper.getArgsInvoke(args)
+
 		// send proposal to endorser
 		var request = {
 			targets: targets,
 			chaincodeId: chaincodeName,
 			chaincodeVersion: chaincodeVersion,
-			fcn: config.invokeQueryFcnName,
-			args: helper.getArgs(args),
+		//	fcn: config.invokeQueryFcnName,  -- remove to work with marbles 3.5.3
+			fcn: args[0],					// Fix to work with marbles 3.5.3 - 2017.05.16 - Yamani
+			args: helper.getArgsInvoke(args),
 			chainId: channelName,
 			txId: tx_id,
 			nonce: nonce
 		};
+
+		logger.debug(">>******args[0]:", request.args[0]);
+
 		return chain.sendTransactionProposal(request);
 	}, (err) => {
 		logger.error('Failed to enroll user \'' + username + '\'. ' + err);

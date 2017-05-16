@@ -32,49 +32,23 @@ ORG2_TOKEN=$(echo $ORG2_TOKEN | jq ".token" | sed "s/\"//g")
 echo
 echo "ORG2 token is $ORG2_TOKEN"
 echo
-echo
-echo "POST request Create channel  ..."
+
+echo "POST instantiate chaincode on peer1 of Org1"
 echo
 curl -s -X POST \
-  http://localhost:4000/channels \
+  http://localhost:4000/channels/mychannel/chaincodes \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "cache-control: no-cache" \
   -H "content-type: application/json" \
   -H "x-access-token: $ORG1_TOKEN" \
   -d '{
-	"channelName":"mychannel",
-	"channelConfigPath":"../artifacts/channel/mychannel.tx"
+	"peers": ["localhost:7051"],
+	"chaincodeName":"dna",
+	"chaincodePath":"hub.jazz.net/git/mvpdna/mvpdna-api/src/chaincode/dna",
+	"chaincodeVersion":"v1",
+	"functionName":"init",
+	"args":["200"]
 }'
 echo
 echo
-sleep 5
-
-echo "POST request Join channel on Org1"
-echo
-curl -s -X POST \
-  http://localhost:4000/channels/mychannel/peers \
-  -H "authorization: Bearer $ORG1_TOKEN" \
-  -H "cache-control: no-cache" \
-  -H "content-type: application/json" \
-  -H "x-access-token: $ORG1_TOKEN" \
-  -d '{
-	"peers": ["localhost:7051","localhost:7056"]
-}'
-echo
-echo
-
-echo "POST request Join channel on Org2"
-echo
-curl -s -X POST \
-  http://localhost:4000/channels/mychannel/peers \
-  -H "authorization: Bearer $ORG2_TOKEN" \
-  -H "cache-control: no-cache" \
-  -H "content-type: application/json" \
-  -H "x-access-token: $ORG2_TOKEN" \
-  -d '{
-	"peers": ["localhost:8051","localhost:8056"]
-}'
-echo
-echo
-
 echo "Total execution time : $(($(date +%s)-starttime)) secs ..."
