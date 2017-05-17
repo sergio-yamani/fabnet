@@ -14,6 +14,7 @@
  *  limitations under the License.
  */
 'use strict';
+
 var path = require('path');
 var fs = require('fs');
 var util = require('util');
@@ -29,6 +30,7 @@ var tx_id = null;
 var nonce = null;
 var member = null;
 var eventhubs = {};
+var msg="";
 
 function getHostnameByPeerAddress(org, peers) {
 	var orgDetails = ORGS[org];
@@ -62,6 +64,9 @@ var invokeChaincode = function(peers, channelName, chaincodeName,
 	chaincodeVersion, args, username, org) {
 	logger.debug('\n============ invoke transaction on organization ' + org +
 		' ============\n');
+
+	msg=""; // reset msg return
+
 	var chain = helper.getChainForOrg(org);
 	helper.setupOrderer();
 	var targets = helper.getTargets(peers, org);
@@ -126,6 +131,13 @@ var invokeChaincode = function(peers, channelName, chaincodeName,
 				proposalResponses[0].response.status, proposalResponses[0].response.message,
 				proposalResponses[0].response.payload, proposalResponses[0].endorsement
 				.signature));
+
+				msg = msg + util.format("\nStatus: %s\nMessage: %s\n\nMetadata: %s\n\nEndorsement Signature: %s",
+				proposalResponses[0].response.status, 
+				proposalResponses[0].response.message,
+				proposalResponses[0].response.payload, 
+				proposalResponses[0].endorsement.signature);
+
 			var request = {
 				proposalResponses: proposalResponses,
 				proposal: proposal,
@@ -185,8 +197,10 @@ var invokeChaincode = function(peers, channelName, chaincodeName,
 				'******************************************************************');
 			logger.debug('E2E_TX_ID=' + '\'' + tx_id + '\'');
 			logger.debug(
+			
 				'******************************************************************');
-			return tx_id;
+			msg = msg + "\nTx Id: " + tx_id; 
+			return msg;
 		} else {
 			logger.error('Failed to order the transaction. Error code: ' + response.status);
 			return 'Failed to order the transaction. Error code: ' + response.status;

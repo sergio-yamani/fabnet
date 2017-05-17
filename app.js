@@ -331,8 +331,7 @@ app.post('/channels/:channelName/chaincodes/:chaincodeName', function(req, res) 
 			let promise = invoke.invokeChaincode(peers, channelName, chaincodeName,
 				chaincodeVersion, args, decoded.username, decoded.orgName);
 			promise.then(function(message) {
-				let msg = "Tx ID: " + message;
-				res.send(msg);
+				res.send(message);
 			});
 		}
 	});

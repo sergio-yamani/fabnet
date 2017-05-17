@@ -106,8 +106,11 @@ var parmsobj = {
 	"chaincodePath": null,
 	"chaincodeVersion": null
 };
-let authorization="Bearer " + token
-let msg = "Authorization: Bearer " + token;
+
+let authorization="Bearer " + token;
+let msg = "Date Time: " + Date(); 
+msg = msg + "\nAuthorization: " + authorization;
+
 $("#txtAreaRetInstall").val(msg);
 
 parmsobj.chaincodeName = $("#ChaincodeName").val();
@@ -146,7 +149,9 @@ var paramsobj = {
 };
 
 let authorization="Bearer " + token;
-let msg = "Authorization: " + authorization;
+let msg = "Date Time: " + Date(); 
+msg = msg + "\nAuthorization: " + authorization;
+
  $("#txtAreaRetInstantiate").val(msg);
 
 paramsobj.chaincodeName = $("#ChaincodeNameInstantiate").val();
@@ -188,7 +193,9 @@ var paramsobj = {
 };
 
 let authorization="Bearer " + token;
-let msg = "Authorization: " + authorization;
+let msg = "Date Time: " + Date(); 
+msg = msg + "\nAuthorization: " + authorization;
+
  $("#txtAreaRetInvoke").val(msg);
 
 url = url + $("#ChaincodeNameInvoke").val();
@@ -222,8 +229,8 @@ http.send(params);
 
 </head>
 <body class="container">
-
   <h4>Hyperledeger Fabric v1.0.0-alpha - Chaincode Manager</h4>
+  <span style="text-align:rigth; color:blue; font-size: 10px" >Powered by 7COMm | Serviços e Soluções em TI</span>
   <br>
   <div class="tab">
       <button class="tablinks" onclick="openTab(event, 'Install')">Install</button>
@@ -292,11 +299,10 @@ http.send(params);
     </div>
     <br>
     <br>
-
     <div class="row">
       <div class="col-md-6">    
         <label for="lblParam">Args</label>
-        <textarea id="txtAreaArgsInstantiate" rows="12" cols="53" placeholder='{"args": ["200","BBB"]}'>{ "args" : ["200"] }</textarea>
+        <textarea id="txtAreaArgsInstantiate" rows="12" cols="53" placeholder='{"args": ["Param string1","Param string2", ...]}'>{ "args" : ["200"] }</textarea>
       </div>
       <div class="col-md-6">    
         <label for="lblReturnInstantiate">Return Message</label>
@@ -326,7 +332,7 @@ http.send(params);
     <div class="row">
       <div class="col-md-6">    
         <label for="lblParam">Args</label>
-        <textarea id="txtAreaArgsInvoke" rows="14" cols="53" placeholder='{"args": ["200","BBB"]}'>{ "args" : ["200"] }</textarea>
+        <textarea id="txtAreaArgsInvoke" rows="14" cols="53" placeholder='{"args": ["function name","Param string1","Param string2",... ]}'></textarea>
       </div>
       <div class="col-md-6">    
         <label for="lblReturnInstantiate">Return Message</label>
