@@ -282,13 +282,13 @@ var getArgs = function(chaincodeArgs) {
 	return args;
 };
 
-// Fix to work with marbles 3.5.3 - 2017.05.16 - Yamani
+// Fix to work with marbles 3.5.3 - 2017.05.16
 // used only in Invoke
 var getArgsInvoke = function(chaincodeArgs) {
 	var args = [];
 
 //	for (var i = 0; i < chaincodeArgs.length; i++) {  
-	for (var i = 1; i < chaincodeArgs.length; i++) {	// Fix to work with marbles 3.5.3 - 2017.05.16 - Yamani
+	for (var i = 1; i < chaincodeArgs.length; i++) {	// Fix to work with marbles 3.5.3 - 2017.05.16
 		args.push(chaincodeArgs[i]);
 	}
 	return args;

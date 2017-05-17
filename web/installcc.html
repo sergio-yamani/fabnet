@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Install Chaincode -  Powered by 7COMm</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<style>
+body {font-family: "Lato", sans-serif;}
+
+/* Style the tab */
+div.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+div.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+div.tab button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+div.tab button.active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+</style>
+
+
+<script>
+
+function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+function CallCC_Cmd(cmd){
+
+var http = new XMLHttpRequest();
+var url = "http://localhost:4000/users";
+var params = "username=7comm&orgName=org1";
+http.open("POST", url, true);
+
+//Send the proper header information along with the request
+http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+http.setRequestHeader("cache-control", "no-cache");
+
+http.onreadystatechange = function() {//Call a function when the state changes.
+    if(http.readyState == 4 && http.status == 200) {
+      let data = http.responseText;
+      let jsonObj = JSON.parse(data);
+      if (cmd == "install") {
+         install(jsonObj.token);
+      }
+      if (cmd == "instantiate") {
+         instantiate(jsonObj.token);
+      }
+      if (cmd == "invoke") {
+         invoke(jsonObj.token);
+      }
+    }
+}
+http.send(params);
+}
+
+function install(token) {
+
+var http = new XMLHttpRequest();
+var url = "http://localhost:4000/chaincodes";
+var parmsobj = {
+	"peers": ["localhost:7051","localhost:7056"],
+	"chaincodeName": null,
+	"chaincodePath": null,
+	"chaincodeVersion": null
+};
+let authorization="Bearer " + token
+let msg = "Authorization: Bearer " + token;
+$("#txtAreaRetInstall").val(msg);
+
+parmsobj.chaincodeName = $("#ChaincodeName").val();
+parmsobj.chaincodeVersion = $("#ChaincodeVersion").val();
+parmsobj.chaincodePath = $("#ChaincodePath").val();
+params = JSON.stringify(parmsobj);
+
+http.open("POST", url, true);
+//Send the proper header information along with the request
+http.setRequestHeader("Content-type", "application/json");
+http.setRequestHeader("cache-control", "no-cache");
+http.setRequestHeader("authorization", authorization );
+http.setRequestHeader("x-access-token", token);
+
+http.onreadystatechange = function() {//Call a function when the state changes.
+    if(http.readyState == 4 && http.status == 200) {
+      msg = msg + "\n\n"  + http.responseText;
+      $("#txtAreaRetInstall").val(msg);
+    }
+}
+
+http.send(params);
+}
+
+function instantiate(token) {
+
+var http = new XMLHttpRequest();
+var url = "http://localhost:4000/channels/mychannel/chaincodes";
+var paramsobj = {
+	"peers": ["localhost:7051"],
+	"chaincodeName": null,
+	"chaincodePath": null,
+	"chaincodeVersion": null,
+  "functionName":"init",
+  "args": []
+};
+
+let authorization="Bearer " + token;
+let msg = "Authorization: " + authorization;
+ $("#txtAreaRetInstantiate").val(msg);
+
+paramsobj.chaincodeName = $("#ChaincodeNameInstantiate").val();
+paramsobj.chaincodeVersion = $("#ChaincodeVersionInstantiate").val();
+paramsobj.chaincodePath = $("#ChaincodePathInstantiate").val();
+
+// Converte a string de Argumentos em um objeto JSON
+let jsonObj = JSON.parse($("#txtAreaArgsInstantiate").val());
+paramsobj.args = jsonObj.args;
+
+params = JSON.stringify(paramsobj);
+
+//$("#txtAreaArgsInstantiate").val(params);
+http.open("POST", url, true);
+//Send the proper header information along with the request
+http.setRequestHeader("Content-type", "application/json");
+http.setRequestHeader("cache-control", "no-cache");
+http.setRequestHeader("authorization", authorization );
+http.setRequestHeader("x-access-token", token);
+http.onreadystatechange = function() {//Call a function when the state changes.
+    if(http.readyState == 4 && http.status == 200) {
+      //alert(http.responseText);
+      msg = msg + "\n\n" + http.responseText;
+       $("#txtAreaRetInstantiate").val(msg);
+    }
+}
+http.send(params);
+}
+
+function invoke(token) {
+
+var http = new XMLHttpRequest();
+var url = "http://localhost:4000/channels/mychannel/chaincodes/";
+var paramsobj = {
+	"peers": ["localhost:7051"],
+	"chaincodeVersion": null,
+  "functionName":"invoke",
+  "args": []
+};
+
+let authorization="Bearer " + token;
+let msg = "Authorization: " + authorization;
+ $("#txtAreaRetInvoke").val(msg);
+
+url = url + $("#ChaincodeNameInvoke").val();
+paramsobj.chaincodeVersion = $("#ChaincodeVersionInvoke").val();
+
+// Converte a string de Argumentos em um objeto JSON
+let jsonObj = JSON.parse($("#txtAreaArgsInvoke").val());
+paramsobj.args = jsonObj.args;
+
+params = JSON.stringify(paramsobj);
+alert(params);
+//$("#txtAreaArgsInvoke").val(params);
+http.open("POST", url, true);
+//Send the proper header information along with the request
+http.setRequestHeader("Content-type", "application/json");
+http.setRequestHeader("cache-control", "no-cache");
+http.setRequestHeader("authorization", authorization );
+http.setRequestHeader("x-access-token", token);
+http.onreadystatechange = function() {//Call a function when the state changes.
+    if(http.readyState == 4 && http.status == 200) {
+      //alert(http.responseText);
+      msg = msg + "\n\n" + http.responseText;
+       $("#txtAreaRetInvoke").val(msg);
+    }
+}
+http.send(params);
+}
+
+
+</script>
+
+</head>
+<body class="container">
+
+  <h4>Hyperledeger Fabric v1.0.0-alpha - Chaincode Manager</h4>
+  <br>
+  <div class="tab">
+      <button class="tablinks" onclick="openTab(event, 'Install')">Install</button>
+      <button class="tablinks" onclick="openTab(event, 'Instantiate')">Instantiate</button>
+      <button class="tablinks" onclick="openTab(event, 'Invoke')">Invoke</button>
+  </div>
+
+  <div id="Install" class="tabcontent">
+    <h5>Install chaincode on peers of Org1</h5>
+    <div class="row">
+      <div class="col-md-2">
+        <label for="lblName">Chaincode Name</label>
+        <input type="text" id="ChaincodeName" class="txtChaincodeName"  size="17" value="dna">
+      </div>
+      <div class="col-md-2">
+        <label for="lblVersion">Chaincode Version</label>
+        <input type="text" class="txtChaincodeVersion" id="ChaincodeVersion" size="10" value="v1">
+        </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-6">
+            <label for="lblPath">Chaincode Path:</label>
+            <input type="text" class="txtChaincodePath" id="ChaincodePath"  size="55" value="hub.jazz.net/git/mvpdna/mvpdna-api/src/chaincode/dna">
+          </div>
+          <div class="col-md-1">
+            <br>
+            <button class="InstallCC btn btn-primary" id="InstallCC" onclick="CallCC_Cmd('install')">Install</button>
+          </div>
+       </div>
+
+       <br>
+       <br>
+
+        <div class="row">
+          <div class="col-md-6">    
+            <label for="lblPath">Return Message</label>
+            <textarea id="txtAreaRetInstall" rows="10" cols="70"> 
+            </textarea>
+          </div>
+        </div>
+    </div>    
+
+  <div id="Instantiate" class="tabcontent">
+    <h5>Instantiate chaincode on peer0 of Org1</h5>
+    <div class="row">
+      <div class="col-md-2">
+        <label for="lblName">Chaincode Name</label>
+        <input type="text" id="ChaincodeNameInstantiate" class="txtChaincodeNameInstantiate"  size="17" value="dna">
+      </div>
+      <div class="col-md-2">
+        <label for="lblVersion">Chaincode Version</label>
+        <input type="text" id="ChaincodeVersionInstantiate" class="txtChaincodeVersionInstantiate" size="10" value="v1">
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-6">
+        <label for="lblPath">Chaincode Path:</label>
+        <input type="text" id="ChaincodePathInstantiate" class="txtChaincodePathInstantiate"  size="55" value="hub.jazz.net/git/mvpdna/mvpdna-api/src/chaincode/dna">
+      </div>
+      <div class="col-md-1">
+        <br>
+        <button class="InstantiateCC btn btn-primary" id="InstantiateCC" onclick="CallCC_Cmd('instantiate')" >Instantiate</button>
+      </div>
+    </div>
+    <br>
+    <br>
+
+    <div class="row">
+      <div class="col-md-6">    
+        <label for="lblParam">Args</label>
+        <textarea id="txtAreaArgsInstantiate" rows="12" cols="53" placeholder='{"args": ["200","BBB"]}'>{ "args" : ["200"] }</textarea>
+      </div>
+      <div class="col-md-6">    
+        <label for="lblReturnInstantiate">Return Message</label>
+        <textarea id="txtAreaRetInstantiate" rows="12" cols="53">
+        </textarea>
+      </div>
+    </div>
+</div>    
+ <div id="Invoke" class="tabcontent">
+    <h5>Invoke chaincode on peer0 of Org1</h5>
+    <div class="row">
+      <div class="col-md-2">
+        <label for="lblName">Chaincode Name</label>
+        <input type="text" id="ChaincodeNameInvoke" class="txtChaincodeNameInvoke"  size="17" value="dna">
+      </div>
+      <div class="col-md-2">
+        <label for="lblVersion">Chaincode Version</label>
+        <input type="text" id="ChaincodeVersionInvoke" class="txtChaincodeVersionInvoke" size="10" value="v1">
+      </div>
+      <div class="col-md-1">
+        <br>
+        <button class="InvokeCC btn btn-primary" id="InvokeCC" onclick="CallCC_Cmd('invoke')" >Invoke</button>
+      </div>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+      <div class="col-md-6">    
+        <label for="lblParam">Args</label>
+        <textarea id="txtAreaArgsInvoke" rows="14" cols="53" placeholder='{"args": ["200","BBB"]}'>{ "args" : ["200"] }</textarea>
+      </div>
+      <div class="col-md-6">    
+        <label for="lblReturnInstantiate">Return Message</label>
+        <textarea id="txtAreaRetInvoke" rows="14" cols="53">
+        </textarea>
+      </div>
+    </div>
+</div> 
+  
+</body>

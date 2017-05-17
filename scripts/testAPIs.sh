@@ -224,7 +224,7 @@ curl -s -X GET \
 echo
 echo
 
-echo "GET query Installed chaincodes"
+echo "GET query Installed chaincodes on peer1"
 echo
 curl -s -X GET \
   "http://localhost:4000/chaincodes?peer=peer1&type=installed" \

@@ -82,16 +82,17 @@ var invokeChaincode = function(peers, channelName, chaincodeName,
 		logger.info('setConfigSetting("E2E_TX_ID") = %s', tx_id);
 		logger.debug(util.format('Sending transaction "%s"', tx_id));
 		logger.debug(">>> Invoke Function:", args[0]);
-		args = helper.getArgsInvoke(args)
+		
 
 		// send proposal to endorser
 		var request = {
 			targets: targets,
 			chaincodeId: chaincodeName,
 			chaincodeVersion: chaincodeVersion,
-		//	fcn: config.invokeQueryFcnName,  -- remove to work with marbles 3.5.3
+		//	fcn: config.invokeQueryFcnName, //-- remove to work with marbles 3.5.3
 			fcn: args[0],					// Fix to work with marbles 3.5.3 - 2017.05.16 - Yamani
 			args: helper.getArgsInvoke(args),
+		//	args: helper.getArgs(args),
 			chainId: channelName,
 			txId: tx_id,
 			nonce: nonce
@@ -144,11 +145,11 @@ var invokeChaincode = function(peers, channelName, chaincodeName,
 						eh.unregisterTxEvent(transactionID);
 						if (code !== 'VALID') {
 							logger.error(
-								'The balance transfer transaction was invalid, code = ' + code);
+								'The transaction was invalid, code = ' + code);
 							reject();
 						} else {
 							logger.info(
-								'The balance transfer transaction has been committed on peer ' +
+								'The transaction has been committed on peer ' +
 								eh.ep._endpoint.addr);
 							resolve();
 						}
