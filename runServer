@@ -23,10 +23,12 @@ sleep 3
 
 # Create Channel: mychannel and join peers form Org1 and Org2
 ./scripts/createChannelJoinPeers.sh
+sleep 3
 
 echo
 echo "Hyperledger Fabric v1.0.0-alpha Network is ready to work ..."
 echo "Hyperledger Fabric v1.0.0-alpha WebAPISerer is ready to work ..."
 echo 
 
+google-chrome file://$FABNET/web/CCManager.html
 

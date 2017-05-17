@@ -206,7 +206,7 @@ let jsonObj = JSON.parse($("#txtAreaArgsInvoke").val());
 paramsobj.args = jsonObj.args;
 
 params = JSON.stringify(paramsobj);
-alert(params);
+//alert(params);
 //$("#txtAreaArgsInvoke").val(params);
 http.open("POST", url, true);
 //Send the proper header information along with the request
