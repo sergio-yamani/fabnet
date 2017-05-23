@@ -4,10 +4,14 @@
   <meta charset="utf-8">
   <title>Install Chaincode -  Powered by 7COMm</title>
 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+
 
 <style>
 body {font-family: "Lato", sans-serif;}
@@ -48,6 +52,21 @@ div.tab button.active {
     border: 1px solid #ccc;
     border-top: none;
 }
+
+/***
+textarea
+{
+width:100%;
+} ***/
+
+
+.textwrapper
+{
+  border:1px;
+  margin:5px 0;
+  padding:3px;
+}
+
 </style>
 
 
@@ -108,7 +127,7 @@ var parmsobj = {
 };
 
 let authorization="Bearer " + token;
-let msg = "Date Time: " + Date(); 
+let msg = "Date Time: " + Date();
 msg = msg + "\nAuthorization: " + authorization;
 
 $("#txtAreaRetInstall").val(msg);
@@ -149,7 +168,7 @@ var paramsobj = {
 };
 
 let authorization="Bearer " + token;
-let msg = "Date Time: " + Date(); 
+let msg = "Date Time: " + Date();
 msg = msg + "\nAuthorization: " + authorization;
 
  $("#txtAreaRetInstantiate").val(msg);
@@ -193,7 +212,7 @@ var paramsobj = {
 };
 
 let authorization="Bearer " + token;
-let msg = "Date Time: " + Date(); 
+let msg = "Date Time: " + Date();
 msg = msg + "\nAuthorization: " + authorization;
 
  $("#txtAreaRetInvoke").val(msg);
@@ -229,7 +248,8 @@ http.send(params);
 
 </head>
 <body class="container">
-  <h4>Hyperledeger Fabric v1.0.0-alpha - Chaincode Manager</h4>
+  <br>
+  <h4>Hyperledeger Fabric v1.0.0-alpha - Chaincode Manager - V1</h4>
   <span style="text-align:rigth; color:blue; font-size: 10px" >Powered by 7COMm | Serviços e Soluções em TI</span>
   <br>
   <div class="tab">
@@ -241,86 +261,117 @@ http.send(params);
   <div id="Install" class="tabcontent">
     <h5>Install chaincode on peers of Org1</h5>
     <div class="row">
-      <div class="col-md-2">
-        <label for="lblName">Chaincode Name</label>
-        <input type="text" id="ChaincodeName" class="txtChaincodeName"  size="17" value="dna">
+      <div class="col-lg-3 col-md-3 col-xs-6">
+        <label  class="control-label" for="lblName">Chaincode Name</label>
+        <div>
+          <input type="text" id="ChaincodeName" class="txtChaincodeName"  size="17" value="dna">
+        </div>
       </div>
-      <div class="col-md-2">
-        <label for="lblVersion">Chaincode Version</label>
-        <input type="text" class="txtChaincodeVersion" id="ChaincodeVersion" size="10" value="v1">
+      <div class="col-lg-3 col-md-3 col-xs-6">
+        <label  class="control-label" for="lblVersion">Chaincode Version</label>
+        <div>
+          <input type="text" class="txtChaincodeVersion" id="ChaincodeVersion" size="10" value="v1">
         </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-lg-8 col-md-8 col-xs-12">
+        <label  class="control-label" for="lblPath">Chaincode Path:</label>
+        <div>
+          <input type="text" class="txtChaincodePath" id="ChaincodePath"  size="55" value="hub.jazz.net/git/mvpdna/mvpdna-api/src/chaincode/dna">
         </div>
-        <br>
-        <div class="row">
-          <div class="col-md-6">
-            <label for="lblPath">Chaincode Path:</label>
-            <input type="text" class="txtChaincodePath" id="ChaincodePath"  size="55" value="hub.jazz.net/git/mvpdna/mvpdna-api/src/chaincode/dna">
-          </div>
-          <div class="col-md-1">
-            <br>
-            <button class="InstallCC btn btn-primary" id="InstallCC" onclick="CallCC_Cmd('install')">Install</button>
-          </div>
-       </div>
+      </div>
+      <div class="col-lg-1 col-md-1 col-xs-2">
+        <label  class="control-label" for="lblbtn"></label>
+        <div>
+          <button class="InstallCC btn btn-primary" id="InstallCC" onclick="CallCC_Cmd('install')">Install</button>
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+      <div class="col-lg-10 col-md-10 col-xs-10">
+        <label class="control-label" for="lblPath">Return Message</label>
+        <div class="textwrapper">
+          <textarea id="txtAreaRetInstall" rows="10" cols="55">
+          </textarea>
+        </div>
+      </div>
+    </div>
+  </div>
 
-       <br>
-       <br>
-
-        <div class="row">
-          <div class="col-md-6">    
-            <label for="lblPath">Return Message</label>
-            <textarea id="txtAreaRetInstall" rows="10" cols="70"> 
-            </textarea>
-          </div>
-        </div>
-    </div>    
+<!-- ******************************************* -->
+<!-- ******* Instantiate                 ******* -->
+<!-- ******************************************* -->
 
   <div id="Instantiate" class="tabcontent">
-    <h5>Instantiate chaincode on peer0 of Org1</h5>
+    <h5>Instantiate chaincode on peers of Org1</h5>
     <div class="row">
-      <div class="col-md-2">
+      <div class="col-lg-3 col-md-3 col-xs-6">
         <label for="lblName">Chaincode Name</label>
-        <input type="text" id="ChaincodeNameInstantiate" class="txtChaincodeNameInstantiate"  size="17" value="dna">
+        <div>
+          <input type="text" id="ChaincodeNameInstantiate" class="txtChaincodeNameInstantiate"  size="17" value="dna">
+        </div>
       </div>
-      <div class="col-md-2">
-        <label for="lblVersion">Chaincode Version</label>
-        <input type="text" id="ChaincodeVersionInstantiate" class="txtChaincodeVersionInstantiate" size="10" value="v1">
+      <div class="col-lg-3 col-md-3 col-xs-6">
+        <label class="control-label" for="lblVersion">Chaincode Version</label>
+        <div>
+          <input type="text" id="ChaincodeVersionInstantiate" class="txtChaincodeVersionInstantiate" size="10" value="v1">
+        </div>
       </div>
     </div>
     <br>
     <div class="row">
-      <div class="col-md-6">
-        <label for="lblPath">Chaincode Path:</label>
-        <input type="text" id="ChaincodePathInstantiate" class="txtChaincodePathInstantiate"  size="55" value="hub.jazz.net/git/mvpdna/mvpdna-api/src/chaincode/dna">
+      <div class="col-lg-8 col-md-8 col-xs-8">
+        <label class="control-label" for="lblPath">Chaincode Path:</label>
+        <div>
+          <input type="text" id="ChaincodePathInstantiate" class="txtChaincodePathInstantiate"  size="55" value="hub.jazz.net/git/mvpdna/mvpdna-api/src/chaincode/dna">
+        </div>
       </div>
-      <div class="col-md-1">
-        <br>
+      <div class="col-lg-1 col-md-1 col-xs-2">
+        <label class="control-label" for="lblPath"></label>
+        <div>
         <button class="InstantiateCC btn btn-primary" id="InstantiateCC" onclick="CallCC_Cmd('instantiate')" >Instantiate</button>
+        </div>
       </div>
     </div>
-    <br>
     <br>
     <div class="row">
-      <div class="col-md-6">    
-        <label for="lblParam">Args</label>
-        <textarea id="txtAreaArgsInstantiate" rows="12" cols="53" placeholder='{"args": ["Param string1","Param string2", ...]}'>{ "args" : ["200"] }</textarea>
+      <div class="col-lg-6 col-md-6 col-xs-6">
+        <label class="control-label" for="lblParam">Args</label>
+        <div>
+          <textarea id="txtAreaArgsInstantiate" rows="12" cols="50" placeholder='{"args": ["Param string1","Param string2", ...]}'>{ "args" : ["200"] }</textarea>
+        </div>
       </div>
-      <div class="col-md-6">    
-        <label for="lblReturnInstantiate">Return Message</label>
-        <textarea id="txtAreaRetInstantiate" rows="12" cols="53">
-        </textarea>
+      <div class="col-lg-6 col-md-6 col-xs-6">
+        <label class="control-label" for="lblReturnInstantiate">Return Message</label>
+        <div>
+          <textarea id="txtAreaRetInstantiate" rows="12" cols="50"></textarea>
+        </div>
       </div>
     </div>
-</div>    
+</div>
+
+<!-- ******************************************* -->
+<!-- ******* Invoke                ******* -->
+<!-- ******************************************* -->
+
  <div id="Invoke" class="tabcontent">
     <h5>Invoke chaincode on peer0 of Org1</h5>
     <div class="row">
-      <div class="col-md-2">
+      <div class="col-lg-3 col-md-3 col-xs-6">
         <label for="lblName">Chaincode Name</label>
-        <input type="text" id="ChaincodeNameInvoke" class="txtChaincodeNameInvoke"  size="17" value="dna">
+        <div>
+          <input type="text" id="ChaincodeNameInvoke" class="txtChaincodeNameInvoke"  size="17" value="dna">
+        </div>
       </div>
-      <div class="col-md-2">
+      <div class="col-lg-3 col-md-3 col-xs-6">
         <label for="lblVersion">Chaincode Version</label>
-        <input type="text" id="ChaincodeVersionInvoke" class="txtChaincodeVersionInvoke" size="10" value="v1">
+        <div>
+          <input type="text" id="ChaincodeVersionInvoke" class="txtChaincodeVersionInvoke" size="10" value="v1">
+        </div>
       </div>
       <div class="col-md-1">
         <br>
@@ -328,18 +379,19 @@ http.send(params);
       </div>
     </div>
     <br>
-    <br>
     <div class="row">
-      <div class="col-md-6">    
+      <div class="col-lg-6 col-md-6 col-xs-6">
         <label for="lblParam">Args</label>
-        <textarea id="txtAreaArgsInvoke" rows="14" cols="53" placeholder='{"args": ["function name","Param string1","Param string2",... ]}'></textarea>
+        <div>
+          <textarea id="txtAreaArgsInvoke" rows="10" cols="50" placeholder='{"args": ["function name","Param string1","Param string2",... ]}'></textarea>
+        </div>
       </div>
-      <div class="col-md-6">    
-        <label for="lblReturnInstantiate">Return Message</label>
-        <textarea id="txtAreaRetInvoke" rows="14" cols="53">
-        </textarea>
+      <div class="col-lg-6 col-md-6 col-xs-6">
+        <label for="lblReturnInvoke">Return Message</label>
+        <div>
+          <textarea id="txtAreaRetInvoke" rows="10" cols="50"></textarea>
+        </div>
       </div>
     </div>
-</div> 
-  
+</div>
 </body>
